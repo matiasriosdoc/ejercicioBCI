@@ -11,7 +11,7 @@ Clonar el proyecto de github
 Vaya a la carpeta del proyecto ejemplo:
 
 ```bash
-  cd ..\ejercicio-api
+  cd ..\ejercicioBCI
 ```
 
 Para construir
