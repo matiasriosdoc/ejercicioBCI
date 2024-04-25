@@ -1,0 +1,25 @@
+server:
+  port: 8081
+spring:
+  datasource:
+    url: jdbc:h2:mem:mydb
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
+  jpa:
+    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+    defer-datasource-initialization: true
+    hibernate:
+      ddlAuto: none
+      use-new-id-generator-mappings: false
+  h2:
+    console.enabled: true
+  sql:
+    init:
+      mode: always
+
+jwt:
+  secret: N1tvNgv7NjTm8x36Nh7bw8AC9I86cTMuB8EV4JgK7pg
+  expiration-time-in-millis: 3600000
+  signature-algorithm-name: HS256
+  loginToken: usersApi
