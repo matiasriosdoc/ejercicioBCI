@@ -11,7 +11,7 @@ Clonar el proyecto de github
 Vaya a la carpeta del proyecto ejemplo:
 
 ```bash
-  cd ..\app\ejercicio-api
+  cd ..\ejercicio-api
 ```
 
 Para construir
@@ -45,11 +45,11 @@ Password: password
 ### Hacer sign-up
 
 ```http
-  POST /users-api/sign-up
+  POST /ejercicio-api/sign-up
 ```
 cURL
 ```bash
-curl -X POST http://localhost:8081/users-api/sign-up -H "Content-Type: application/json" -d "{\"name\":\"Alex\",\"email\":\"lex.184.1w9rsa5s156qa@gakkmail.com\",\"password\":\"a2asfGfdfdf4\",\"phones\":[{\"number\":1234,\"citycode\":2,\"countrycode\":\"ARG\"}]}"
+curl -X POST http://localhost:8081/ejercicio-api/sign-up -H "Content-Type: application/json" -d "{\"name\":\"Matias\",\"email\":\"matias.rios156@gakkmail.com\",\"password\":\"a2asfGfdfdf4\",\"phones\":[{\"number\":1234,\"citycode\":2,\"countrycode\":\"ARG\"}]}"
 ```
 
 Para copiar, pegar y ejecutar en PowerShell
@@ -60,8 +60,8 @@ $headers.Add("Content-Type", "application/json")
 
 $body = @"
 {
-    `"name`": `"Alex`",
-    `"email`": `"lex.184.1w9rsa5s6156qa@gakkmail.com`",
+    `"name`": `"Matias`",
+    `"email`": `"matias.rios156@gakkmail.com`",
     `"password`": `"a2asfGfdfdf4`",
     `"phones`": [
         {
@@ -73,7 +73,7 @@ $body = @"
 }
 "@
 
-$response = Invoke-RestMethod 'http://localhost:8081/users-api/sign-up' -Method 'POST' -Headers $headers -Body $body
+$response = Invoke-RestMethod 'http://localhost:8081/ejercicio-api/sign-up' -Method 'POST' -Headers $headers -Body $body
 $response | ConvertTo-Json
 
 ```
@@ -81,7 +81,7 @@ $response | ConvertTo-Json
 ### Hacer login
 
 ```http
-  GET /users-api/login
+  GET /ejercicio-api/login
 ```
 
 | Parameter | Type     | Description                                     |
@@ -90,5 +90,5 @@ $response | ConvertTo-Json
 
 cURL (recuerde tomar el token de la respuesta del sign-up)
 ```bash
-curl -X GET http://localhost:8081/users-api/login -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJwYXNzd29yZCI6IiQyYSQxMCR1ZUZ2S1dpZzVvQVJpcDFaeERSa0xlcjdwbi9ZYkRlTVoxVVVXVHBPMHY1Y0xCMHdjRGR1bSIsImVtYWlsIjoibGV4LjE4NC4xdzlhc2E1czE1NnFhQGdha2ttYWlsLmNvbSJ9.8-Q_F6svHqYzIymEQZ4UnhYcZUtWlXHP6aqKdoAMQTg"
+curl -X GET http://localhost:8081/ejercicio-api/login -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJwYXNzd29yZCI6IiQyYSQxMCR1ZUZ2S1dpZzVvQVJpcDFaeERSa0xlcjdwbi9ZYkRlTVoxVVVXVHBPMHY1Y0xCMHdjRGR1bSIsImVtYWlsIjoibGV4LjE4NC4xdzlhc2E1czE1NnFhQGdha2ttYWlsLmNvbSJ9.8-Q_F6svHqYzIymEQZ4UnhYcZUtWlXHP6aqKdoAMQTg"
 ```

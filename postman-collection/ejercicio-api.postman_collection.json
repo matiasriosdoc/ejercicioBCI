@@ -1,10 +1,9 @@
 {
 	"info": {
-		"_postman_id": "f3cafffe-ef72-45b8-aa5c-3213253e6ac1",
-		"name": "users-api",
+		"_postman_id": "b7ab1821-8662-48c6-9ff0-91f56a593b5f",
+		"name": "ejercicio-api",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "2899741",
-		"_collection_link": "https://www.postman.com/livepersonzoho/workspace/globalogic/collection/2899741-f3cafffe-ef72-45b8-aa5c-3213253e6ac1?action=share&creator=2899741&source=collection_link"
+		"_exporter_id": "454168"
 	},
 	"item": [
 		{
@@ -14,7 +13,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"Alex\",\r\n    \"email\": \"lex.184.1w9asa5s156qa@gakkmail.com\",\r\n    \"password\": \"a2asfGfdfdf4\",\r\n    \"phones\": [\r\n        {\r\n            \"number\": 1234,\r\n            \"citycode\": 2,\r\n            \"countrycode\": \"ARG\"\r\n        }\r\n    ]\r\n}",
+					"raw": "{\r\n    \"name\": \"Matias\",\r\n    \"email\": \"mati.184.1w9asa5s156qa@gakkmail.com\",\r\n    \"password\": \"a2asfGfdfdf4\",\r\n    \"phones\": [\r\n        {\r\n            \"number\": 1234,\r\n            \"citycode\": 2,\r\n            \"countrycode\": \"ARG\"\r\n        }\r\n    ]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -22,14 +21,14 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8081/users-api/sign-up",
+					"raw": "http://localhost:8081/ejercicio-api/sign-up",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8081",
 					"path": [
-						"users-api",
+						"ejercicio-api",
 						"sign-up"
 					]
 				}
@@ -52,14 +51,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8081/users-api/login",
+					"raw": "http://localhost:8081/ejercicio-api/login",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8081",
 					"path": [
-						"users-api",
+						"ejercicio-api",
 						"login"
 					]
 				}
