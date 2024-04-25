@@ -1,4 +1,4 @@
-# users-api
+# ejercicio-api
 
 Api para hacer SIGN-UP y LOGIN
 
