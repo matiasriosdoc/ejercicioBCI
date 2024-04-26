@@ -1,23 +1,20 @@
 package com.globalogic.bci.ejercicioapi.utils;
 
-import io.jsonwebtoken.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import com.globalogic.bci.ejercicioapi.exception.InvalidTokenException;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import org.springframework.stereotype.Component;
+
+import com.globalogic.bci.ejercicioapi.exception.InvalidTokenException;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.JwtBuilder;
+import io.jsonwebtoken.JwtParser;
+
 @Component
 public class TokenJWTUtils {
-
-    @Autowired
-    private JwtBuilder jwtBuilder;
-
-    @Autowired
-    private JwtParser jwtParser;
 
     private static JwtParser _jwtParser;
 

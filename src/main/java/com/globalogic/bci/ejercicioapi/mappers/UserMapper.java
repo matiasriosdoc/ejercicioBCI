@@ -2,6 +2,7 @@ package com.globalogic.bci.ejercicioapi.mappers;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.springframework.stereotype.Component;
 
 import com.globalogic.bci.ejercicioapi.dto.CreateUserRequestDTO;
 import com.globalogic.bci.ejercicioapi.dto.CreateUserResponseDTO;
@@ -15,6 +16,7 @@ public interface UserMapper {
     @Mapping(source = "id", target = "id")
     @Mapping(source = "name", target = "name")
     @Mapping(source = "email", target = "email")
+    //@Mapping(source = "token", target = "token")
     @Mapping(source = "created", target = "created")
     @Mapping(source = "phones", target = "phones")
     @Mapping(source = "lastLogin", target = "lastLogin")
@@ -26,7 +28,6 @@ public interface UserMapper {
     @Mapping(source = "password", target = "password")
     @Mapping(source = "phones", target = "phones")
     User createUserRequestDTOToUser(CreateUserRequestDTO createUserRequestDTO);
-
 
     @Mapping(source = "number", target = "number")
     @Mapping(source = "cityCode", target = "cityCode")

@@ -117,7 +117,7 @@ class UsersSpecification extends Specification {
         ])
 
         when:
-        def response = mockMvc.perform(MockMvcRequestBuilders.post("/users-api/sign-up")
+        def response = mockMvc.perform(MockMvcRequestBuilders.post("/ejercicio-api/sign-up")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(invalidRequest)))
                 .andReturn().response
@@ -182,7 +182,7 @@ class UsersSpecification extends Specification {
 
     def "given an invalid request where email has special character returns 400 BAD_REQUEST"() {
         given:
-        CreateUserRequestDTO invalidRequest = createRequest([email: "matias.rios156@gakkmail.com"])
+        CreateUserRequestDTO invalidRequest = createRequest([email: "__--¿.rios156@gakkmail.com"])
 
         when:
         def response = mockMvc.perform(MockMvcRequestBuilders.post("/ejercicio-api/sign-up")

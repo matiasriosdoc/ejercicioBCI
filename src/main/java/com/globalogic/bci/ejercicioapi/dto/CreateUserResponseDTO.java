@@ -21,7 +21,6 @@ import java.util.List;
     "lastLogin",
     "token",
     "isActive",
-   //TODO Puede ser que eston no sea necesario
     "name",
     "email",
     "password",
