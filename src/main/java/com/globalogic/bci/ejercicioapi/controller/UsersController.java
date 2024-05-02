@@ -1,5 +1,9 @@
 package com.globalogic.bci.ejercicioapi.controller;
 
+import com.globalogic.bci.ejercicioapi.dto.CreateUserRequestDTO;
+import com.globalogic.bci.ejercicioapi.dto.CreateUserResponseDTO;
+import com.globalogic.bci.ejercicioapi.exception.UserUnauthorizedException;
+import com.globalogic.bci.ejercicioapi.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -7,11 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import com.globalogic.bci.ejercicioapi.dto.CreateUserRequestDTO;
-import com.globalogic.bci.ejercicioapi.dto.CreateUserResponseDTO;
-import com.globalogic.bci.ejercicioapi.exception.UserUnauthorizedException;
-import com.globalogic.bci.ejercicioapi.service.UsersService;
 
 
 @Controller

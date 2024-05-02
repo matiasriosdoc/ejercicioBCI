@@ -1,14 +1,12 @@
 package com.globalogic.bci.ejercicioapi.mappers;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.springframework.stereotype.Component;
-
 import com.globalogic.bci.ejercicioapi.dto.CreateUserRequestDTO;
 import com.globalogic.bci.ejercicioapi.dto.CreateUserResponseDTO;
 import com.globalogic.bci.ejercicioapi.dto.PhoneDTO;
 import com.globalogic.bci.ejercicioapi.jpa.domains.Phone;
 import com.globalogic.bci.ejercicioapi.jpa.domains.User;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {

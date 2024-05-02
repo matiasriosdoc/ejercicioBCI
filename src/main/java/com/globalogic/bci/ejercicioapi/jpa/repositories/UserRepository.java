@@ -1,8 +1,7 @@
 package com.globalogic.bci.ejercicioapi.jpa.repositories;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import com.globalogic.bci.ejercicioapi.jpa.domains.User;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 import java.util.UUID;
