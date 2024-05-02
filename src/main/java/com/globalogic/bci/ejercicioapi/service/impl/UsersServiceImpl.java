@@ -25,11 +25,11 @@ public class UsersServiceImpl implements UsersService {
 
     private final UserMapper userMapper;
 
-    @Autowired
     private TokenJWTUtils tokenJWTUtils;
 
     @Autowired
-    public UsersServiceImpl(UserRepository userRepository, UserMapper userMapper) {
+    public UsersServiceImpl(UserRepository userRepository, UserMapper userMapper, TokenJWTUtils tokenJWTUtils) {
+        this.tokenJWTUtils = tokenJWTUtils;
         this.userMapper = userMapper;
         this.userRepository = userRepository;
     }

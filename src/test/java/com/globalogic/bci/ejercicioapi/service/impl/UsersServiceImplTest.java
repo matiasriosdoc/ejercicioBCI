@@ -2,39 +2,36 @@ package com.globalogic.bci.ejercicioapi.service.impl;
 
 import com.globalogic.bci.ejercicioapi.dto.CreateUserRequestDTO;
 import com.globalogic.bci.ejercicioapi.dto.CreateUserResponseDTO;
+import com.globalogic.bci.ejercicioapi.exception.UserNotFoundException;
+import com.globalogic.bci.ejercicioapi.exception.UserUnauthorizedException;
 import com.globalogic.bci.ejercicioapi.jpa.domains.User;
 import com.globalogic.bci.ejercicioapi.jpa.repositories.UserRepository;
 import com.globalogic.bci.ejercicioapi.mappers.UserMapper;
 import com.globalogic.bci.ejercicioapi.utils.TokenJWTUtils;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.JwtParser;
-import org.junit.Before;
-import org.junit.jupiter.api.Assertions;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.powermock.modules.junit4.PowerMockRunner;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import static com.github.javaparser.utils.Utils.assertNotNull;
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 
 public class UsersServiceImplTest {
-    private CreateUserRequestDTO requestDTO;
-    private CreateUserResponseDTO responseDTO;
-    private User user;
+    private final static String MAIL= "test@example.com";
+    private final static String PASS= "password";
+    private final static String TOKEN= "tokenTest";
+    private final static UUID ID= UUID.randomUUID();
+
     @Mock
     private UserRepository userRepository;
 
@@ -44,72 +41,95 @@ public class UsersServiceImplTest {
     @Mock
     private TokenJWTUtils tokenJWTUtils;
 
-    @Mock
-    private JwtBuilder _jwtBuilder;
-    @Mock
-    private JwtParser _jwtParser;
-
     @InjectMocks
     private UsersServiceImpl usersService;
 
     @BeforeEach
     public void setUp() {
-        MockitoAnnotations.openMocks(this);
-
-      //  usersService = new UsersServiceImpl(userRepository,userMapper);
-      //  tokenJWTUtils = new TokenJWTUtils(_jwtBuilder,_jwtParser);
-
+        MockitoAnnotations.initMocks(this);
     }
 
     @Test
     public void testSignUp() {
-        // Preparar el entorno de la prueba
         CreateUserRequestDTO requestDTO = this.makeRequestDTO();
-        CreateUserResponseDTO responseDTO = this.makeResponseDTO(); // Crear un objeto CreateUserResponseDTO simulado
-        //tokenJWTUtils = new TokenJWTUtils(jwtBuilder, jwtParser);
-        when(userMapper.createUserRequestDTOToUser(requestDTO)).thenReturn(makeUser());
-        when(userRepository.save(makeUser())).thenReturn(makeUser());
+        CreateUserResponseDTO responseDTO = this.makeResponseDTO();
 
-        when(tokenJWTUtils.generateToken(anyString(), anyString())).thenReturn("token");
+        when(userMapper.createUserRequestDTOToUser(any(CreateUserRequestDTO.class))).thenReturn(new User());
+        when(userRepository.save(any(User.class))).thenReturn(new User());
+        when(userMapper.userToCreateUserResponseDTO(any(User.class))).thenReturn(responseDTO);
+        when(tokenJWTUtils.generateToken(anyString(), anyString())).thenReturn(TOKEN);
 
-        when(userMapper.userToCreateUserResponseDTO(makeUser())).thenReturn(responseDTO);
         CreateUserResponseDTO response = usersService.signUp(requestDTO);
 
         // Verificar el resultado esperado
         assertNotNull(response);
-        assertEquals(responseDTO.getEmail(), response.getEmail());
-        assertEquals(responseDTO.getToken(), response.getToken());
+        assertEquals(MAIL, response.getEmail());
+        assertEquals(TOKEN, response.getToken());
 
     }
 
-    private CreateUserResponseDTO makeResponseDTO() {
-        if (responseDTO == null) {
-            responseDTO = new CreateUserResponseDTO();
-            responseDTO.setId(makeUser().getId().toString());
-            responseDTO.setEmail(makeUser().getEmail());
-            responseDTO.setToken("mockedToken");
+    @Test
+    public void testLogin() {
+        // Preparar el entorno de la prueba
+        Jws<Claims> claimsJws = mock(Jws.class);
+        User user = new User();
+        user.setPassword(PASS);
+        CreateUserResponseDTO responseDTO = makeResponseDTO();
+        responseDTO.setToken(TOKEN);
 
-        }
+        when(tokenJWTUtils.validateAndExtractJWTClaims(anyString())).thenReturn(claimsJws);
+        when(claimsJws.getBody()).thenReturn(mock(Claims.class));
+        when(claimsJws.getBody().get("email", String.class))
+                .thenReturn(MAIL);
+        when(claimsJws.getBody().get("password", String.class))
+                .thenReturn(PASS);
+        when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(user));
+        when(userMapper.userToCreateUserResponseDTO(any(User.class))).thenReturn(responseDTO);
+        when(userRepository.save(any(User.class))).thenReturn(user);
+        when(tokenJWTUtils.generateToken(anyString(), anyString())).thenReturn(TOKEN);
+
+        CreateUserResponseDTO responseTest = usersService.login(TOKEN);
+
+        assertNotNull(responseTest);
+        assertEquals(TOKEN, responseTest.getToken());
+    }
+
+    @Test
+    public void testLoginThrowsUserNotFoundException() {
+        when(tokenJWTUtils.validateAndExtractJWTClaims(TOKEN)).thenThrow(UserNotFoundException.class);
+
+        assertThrows(UserNotFoundException.class, () -> usersService.login(TOKEN));
+    }
+
+    @Test
+    public void testLoginThrowsUserUnauthorizedException() {
+        Jws<Claims> claimsJws = mock(Jws.class);
+        User user = new User(); // Crear un objeto User simulado
+        user.setPassword(PASS);
+
+        when(tokenJWTUtils.validateAndExtractJWTClaims(TOKEN)).thenReturn(claimsJws);
+        when(claimsJws.getBody()).thenReturn(mock(Claims.class));
+        when(claimsJws.getBody().get("email", String.class)).thenReturn("test@example.com");
+        when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.of(user));
+        when(userMapper.userToCreateUserResponseDTO(user)).thenReturn(new CreateUserResponseDTO());
+        when(userRepository.save(any(User.class))).thenReturn(user);
+
+        assertThrows(UserUnauthorizedException.class, () -> usersService.login(TOKEN));
+    }
+
+
+    private CreateUserResponseDTO makeResponseDTO() {
+        CreateUserResponseDTO responseDTO = new CreateUserResponseDTO();
+        responseDTO.setId(ID.toString());
+        responseDTO.setEmail(MAIL);
+        responseDTO.setPassword(PASS);
         return responseDTO;
     }
 
-    private User makeUser() {
-        if (user == null) {
-            user = new User();
-            user.setId(UUID.randomUUID());
-            user.setEmail(makeRequestDTO().getEmail());
-            user.setPassword(makeRequestDTO().getPassword());
-        }
-        return user;
-    }
-
     private CreateUserRequestDTO makeRequestDTO() {
-        if (requestDTO == null) {
-            requestDTO = new CreateUserRequestDTO();
-            requestDTO.setEmail("test@example.com");
-            requestDTO.setPassword("password");
-
-        }
+        CreateUserRequestDTO requestDTO = new CreateUserRequestDTO();
+        requestDTO.setEmail(MAIL);
+        requestDTO.setPassword(PASS);
         return requestDTO;
     }
 }

@@ -1,3 +1,4 @@
+import com.globalogic.bci.ejercicioapi.utils.TokenJWTUtilsImpl
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
@@ -24,6 +25,9 @@ class UsersSpecification extends Specification {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private TokenJWTUtils tokenJWTUtilsImpl;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -60,8 +64,7 @@ class UsersSpecification extends Specification {
 
         responseDTO.token != null
         def token = responseDTO.token
-
-        Jws<Claims> claimsJws = TokenJWTUtils.validateAndExtractJWTClaims(token);
+        Jws<Claims> claimsJws = tokenJWTUtilsImpl.validateAndExtractJWTClaims(token);
 
         claimsJws.getBody().containsKey("email")
         claimsJws.getBody().get("email", String.class) == "matias.rios156@gakkmail.com"
@@ -322,14 +325,4 @@ class UsersSpecification extends Specification {
         return "${nombreAleatorio}@${dominio}"
     }
 
-   // def "test Main Method"() {
-   //     given:
-   //     def springApplicationMock = new MockFor(SpringApplication)
-   //         springApplicationMock.stub.run(EjercicioApiApplication, ["argumento1", "argumento2"] as String[]) { Class clazz, args -> "valorDeRetorno" }
-   //     when:
-   //         EjercicioApiApplication.main(["argumento1", "argumento2"] as String[])
-
-   //     then:
-   //         springApplicationMock.verify(1 * springApplicationMock.stub.run(EjercicioApiApplication, ["argumento1", "argumento2"] as String[]))
-   // }
 }
