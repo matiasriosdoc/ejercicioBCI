@@ -26,6 +26,9 @@ public class UsersServiceImpl implements UsersService {
     private final UserMapper userMapper;
 
     @Autowired
+    private TokenJWTUtils tokenJWTUtils;
+
+    @Autowired
     public UsersServiceImpl(UserRepository userRepository, UserMapper userMapper) {
         this.userMapper = userMapper;
         this.userRepository = userRepository;
@@ -40,8 +43,7 @@ public class UsersServiceImpl implements UsersService {
         CreateUserResponseDTO responseDTO = userMapper.userToCreateUserResponseDTO(
                 userRepository.save(
                         userMapper.createUserRequestDTOToUser(requestDTO)));
-
-        responseDTO.setToken(TokenJWTUtils.generateToken(requestDTO.getEmail(), requestDTO.getPassword()));
+        responseDTO.setToken(tokenJWTUtils.generateToken(requestDTO.getEmail(), requestDTO.getPassword()));
 
         return responseDTO;
     }
@@ -49,7 +51,7 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public CreateUserResponseDTO login(String token) {
-        Jws<Claims> claimsJws = TokenJWTUtils.validateAndExtractJWTClaims(token);
+        Jws<Claims> claimsJws = tokenJWTUtils.validateAndExtractJWTClaims(token);
 
         String email = claimsJws.getBody().get("email", String.class);
 
@@ -61,7 +63,7 @@ public class UsersServiceImpl implements UsersService {
 
         if(user.getPassword()
                 .equals(claimsJws.getBody().get("password", String.class))){
-            response.setToken(TokenJWTUtils.generateToken(email, response.getPassword()));
+            response.setToken(tokenJWTUtils.generateToken(email, response.getPassword()));
 
             return response;
         }

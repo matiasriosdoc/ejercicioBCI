@@ -28,9 +28,6 @@ class UsersSpecification extends Specification {
     @Autowired
     private ObjectMapper objectMapper;
 
-    def "Name"() {
-    }
-
     def "given a valid request should sign up a user successfully returns 200 OK"() {
         given:
         CreateUserRequestDTO validRequest = createRequest([])
@@ -325,5 +322,14 @@ class UsersSpecification extends Specification {
         return "${nombreAleatorio}@${dominio}"
     }
 
+   // def "test Main Method"() {
+   //     given:
+   //     def springApplicationMock = new MockFor(SpringApplication)
+   //         springApplicationMock.stub.run(EjercicioApiApplication, ["argumento1", "argumento2"] as String[]) { Class clazz, args -> "valorDeRetorno" }
+   //     when:
+   //         EjercicioApiApplication.main(["argumento1", "argumento2"] as String[])
 
+   //     then:
+   //         springApplicationMock.verify(1 * springApplicationMock.stub.run(EjercicioApiApplication, ["argumento1", "argumento2"] as String[]))
+   // }
 }

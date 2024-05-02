@@ -4,6 +4,7 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Objects;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,8 +28,8 @@ public class UsersControllerAdvice {
     @ExceptionHandler( MethodArgumentNotValidException.class )
     protected ResponseEntity<ErrorResponseDTO> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex, WebRequest request) {
-        val field = ex.getBindingResult().getFieldError().getField();
-        val message = ex.getBindingResult().getFieldError().getDefaultMessage();
+        val field = ex.getBindingResult()!=null?ex.getBindingResult().getFieldError().getField():"";
+        val message = ex.getBindingResult()!=null?ex.getBindingResult().getFieldError().getDefaultMessage():"";
         return new ResponseEntity<>(
                 new ErrorResponseDTO(
                         Arrays.asList(new ErrorDetailResponseDTO(Timestamp.valueOf(LocalDateTime.now()),
@@ -47,7 +48,7 @@ public class UsersControllerAdvice {
     }
 
     @ExceptionHandler({UserUnauthorizedException.class, UserNotFoundException.class})
-    public ResponseEntity<ErrorResponseDTO> handleUserAlreadyExistsException(RuntimeException ex) {
+    public ResponseEntity<ErrorResponseDTO> handleUserUnauthorizedException(RuntimeException ex) {
         String errorMessage = ex.getMessage();
 
         ErrorResponseDTO errorResponse = new ErrorResponseDTO();
@@ -58,7 +59,7 @@ public class UsersControllerAdvice {
     }
 
     @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
-    public ResponseEntity<ErrorResponseDTO> handleIntegrityConstraintViolationException(RuntimeException ex) {
+    public ResponseEntity<ErrorResponseDTO> handleIntegrityConstraintViolationException(Exception ex) {
 
         ErrorResponseDTO errorResponse = new ErrorResponseDTO();
         errorResponse.setErrors(Arrays.asList(new ErrorDetailResponseDTO(

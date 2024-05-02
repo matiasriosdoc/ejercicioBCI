@@ -48,9 +48,13 @@ dependencies {
 	implementation 'org.codehaus.groovy:groovy-all:3.0.9'
 	testImplementation 'org.spockframework:spock-core:2.0-M3-groovy-3.0'
 	testImplementation 'org.spockframework:spock-spring:2.0-M3-groovy-3.0'
-
+	testImplementation group: 'org.mockito', name: 'mockito-inline', version: '5.2.0'
 	implementation 'io.projectreactor:reactor-core:3.4.16'
-	
+	// https://mvnrepository.com/artifact/org.powermock/powermock-module-junit4
+	testImplementation group: 'org.powermock', name: 'powermock-module-junit4', version: '2.0.9'
+// https://mvnrepository.com/artifact/org.powermock/powermock-api-mockito2
+	testImplementation group: 'org.powermock', name: 'powermock-api-mockito2', version: '2.0.9'
+
 }
 
 jacocoTestReport {

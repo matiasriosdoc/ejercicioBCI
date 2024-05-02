@@ -16,26 +16,26 @@ import io.jsonwebtoken.JwtParser;
 @Component
 public class TokenJWTUtils {
 
-    private static JwtParser _jwtParser;
+    private JwtParser _jwtParser;
 
-    private static JwtBuilder _jwtBuilder;
+    private JwtBuilder _jwtBuilder;
 
     public TokenJWTUtils(JwtBuilder jwtBuilder, JwtParser jwtParser) {
         _jwtParser = jwtParser;
         _jwtBuilder = jwtBuilder;
     }
 
-    public static String generateToken(String email, String password) {
+    public Jws<Claims> validateAndExtractJWTClaims(String token) {
+        return Optional.of(_jwtParser.parseClaimsJws(token))
+                .orElseThrow(() -> new InvalidTokenException("Token inválido"));
+    }
+
+    public String generateToken(String email, String password) {
 
         Map<String, Object> claims = new HashMap<>();
         claims.put("email", email);
         claims.put("password", password);
 
         return _jwtBuilder.setClaims(claims).compact();
-    }
-
-    public static Jws<Claims> validateAndExtractJWTClaims(String token) {
-        return Optional.of(_jwtParser.parseClaimsJws(token))
-                .orElseThrow(() -> new InvalidTokenException("Token inválido"));
     }
 }
